@@ -1,7 +1,7 @@
 
 
 <div align="center">
-    <h2>Neural Network</h2>
+    <h2><span style="color: ##2d9e19;">Neural Network</span> :robot:</h2>
 </div>
 
 <p align="justify">
