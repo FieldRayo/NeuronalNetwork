@@ -1,20 +1,8 @@
-<div align="center">
-  <h1><img src="neural-network.png" alt="Neural Network" width="400px"></h1>
-</div>
 
----
-
-<p align="justify">
-    <img src="divider.png" alt="Divider" width="100%">
-</p>
 
 <div align="center">
-    <h2>Neural Network Code Description</h2>
+    <h2>Neural Network</h2>
 </div>
-
-<p align="center">
-    <img src="divider.png" alt="Divider" width="70%">
-</p>
 
 <p align="justify">
     This code represents a simple neural network that takes two numbers as input and returns 1 if the sum of the two numbers is greater than or equal to 10; otherwise, it returns 0. The neural network is designed with a single hidden layer.
@@ -40,14 +28,7 @@
     Overall, this code provides a simple neural network implementation and a data generator to train and test the network. You can modify the parameters and experiment with different datasets and configurations to observe the network's performance.
 </p>
 
-<p align="center">
-    <img src="divider.png" alt="Divider" width="70%">
-</p>
-
 <div align="center">
     <h3>Happy Coding! :rocket:</h3>
 </div>
 
-<p align="center">
-    <img src="divider.png" alt="Divider" width="100%">
-</p>
