@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 inputs = np.array([[0, 0, 1], [0, 1, 1], [1, 0, 1], [1, 1, 1]])
 y = np.array([[0], [1], [1], [0]])
 
-# XD
 class NeuralNetwork:
     def __init__(self, input_size, hidden_size, output_size):
         # Layers
