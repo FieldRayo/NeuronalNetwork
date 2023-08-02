@@ -17,7 +17,7 @@ from Datatrain import *
 data = {}
 
 
-def test_command(command, size, type_operator):
+def test_command(command, size, type_op):
     words = command.split()
     
     if len(words) < size + 1:
@@ -26,11 +26,11 @@ def test_command(command, size, type_operator):
     
     args = {f"v{i}": word for i, word in enumerate(words)}
     
-    if type_operator == 0 and args["v1"] in data:
+    if type_op == 0 and args["v1"] in data:
         print("A neural network with that name has already been created.")
         return 0
     
-    if type_operator == 1 and args["v1"] not in data:
+    if type_op == 1 and args["v1"] not in data:
         print("The neural network is not present in the data.")
         return 0
     
@@ -39,160 +39,179 @@ def test_command(command, size, type_operator):
 
 def create_net(command):
     args = test_command(command, 1, 0)
-    if args == 0: return 0
+    if args == 0:
+        return ""
+    
     name_nn = args["v1"]
     
     data[name_nn] = {}
     data[name_nn]["ID"] = cm_nn()
-    print(f"{name_nn}: {data[name_nn]}\n- Has been created -")
+    
+    return f"{name_nn}: {data[name_nn]}\n- Has been created -"
 
 
 def create_default_net(command):
     args = test_command(command, 1, 0)
-    if args == 0: return 0
+    if args == 0:
+        return ""
+    
     name_nn = args["v1"]
     
     data[name_nn] = {}
     data[name_nn]["ID"] = cm_nn_default()
-    print(f"{name_nn}: {data[name_nn]}\n- Has been created -")
+    
+    return f"{name_nn}: {data[name_nn]}\n- Has been created -"
 
 
 def forward(command):
     args = test_command(command, 1, 1)
-    if args == 0: return 0
+    if args == 0:
+        return ""
+    
     name_nn = args["v1"]
     
     data[name_nn]["forward"] = cm_nn_forward(data[name_nn]["ID"])
-    print(f"- {name_nn}: The forward has been applied -")
+    
+    return f"- {name_nn}: The forward has been applied -"
 
 
 def backpropagation(command):
     args = test_command(command, 1, 1)
-    if args == 0: return 0
+    if args == 0:
+        return ""
+    
     name_nn = args["v1"]
     
     data[name_nn]["backpropagation"] = cm_nn_back(data[name_nn]["ID"])
     
-    print(f"- {name_nn}: The backpropagation has been applied -")
+    return f"- {name_nn}: The backpropagation has been applied -"
 
 
 def gradientdescent(command):
     args = test_command(command, 2, 1)
-    if args == 0: return 0
+    if args == 0:
+        return ""
+    
     name_nn = args["v1"]
     lr = args["v2"]
     
     data[name_nn]["gradientdescent"] = cm_nn_grad(data[name_nn]["ID"], lr)
-    print(f"- {name_nn}: The gradient decent has been applied -")
+    return f"- {name_nn}: The gradient decent has been applied -"
 
 
 def get_value(command):
     args = test_command(command, 3, 1)
-    if args == 0: return 0
+    if args == 0:
+        return ""
+    
     name_nn = args["v1"]
     value = args["v2"]
     n_data = args["v3"]
     
-    if not hasattr(data[name_nn]["ID"], f"{value}"):
-        print("The neural network is missing from the data")
-        return
+    if not hasattr(data[name_nn]["ID"], value):
+        return "The neural network is missing from the data"
     
-    s_data = getattr(data[name_nn]['ID'], f'{value}')
+    s_data = getattr(data[name_nn]['ID'], value)
     try:
         if len(n_data) != 1:
             n_data = n_data.split("-")
             n_data = list(map(int, n_data))
-            print(f"{value} = {s_data[n_data[0] - 1:n_data[1] - 1]}")
+            return s_data[n_data[0] - 1:n_data[1] - 1]
         elif n_data == "*":
-            print(f"{value} = {s_data}")
+            return s_data
         else:
             n_data = list(map(int, n_data))[0]
-            print(f"{value} = {s_data[n_data - 1]}")
+            return s_data[n_data - 1]
     except:
-        print(f"{value} = {s_data}")
+        return s_data
 
 
 def set_value(command):
-    if command.split()[2] == "n_hidden":
+    args = test_command(command, 3, 1)
+    if args == 0:
+        return ""
+    
+    arg_value = get_value(f"get_value {args['v1']} {args['v2']} *")
+    
+    if isinstance(arg_value, list):
         name_nn = command.split()[1]
-        value = "n_hidden"
-        new_value = command.split("n_hidden ")[-1]
+        value = args["v2"]
+        new_value = command.split(f"{args['v2']} ")[-1]
         new_value = ast.literal_eval(new_value)
     else:
-        args = test_command(command, 3, 1)
-        if args == 0: return 0
         name_nn = args["v1"]
         value = args["v2"]
-        new_value = int(args["v3"])
-    
-    if name_nn not in data:
-        print("The neural network is missing from the data")
-        return
+        new_value = args["v3"]
     
     if not hasattr(data[name_nn]["ID"], f"{value}"):
-        print("The neural network is missing from the data")
-        return
+        return "The neural network is missing from the data"
     
     setattr(data[name_nn]["ID"], value, new_value)
     update(data[name_nn]["ID"])
-    print(f"{value} = {new_value}")
+    
+    return f"{value} = {new_value}"
 
 
 def show_nn(command):
     if len(data) == 0:
-        print("First create a neural network with 'create_net (ID)'")
-    else:
-        show_nn()
+        return "First create a neural network with 'create_net (ID)'"
+    
+    return "\n".join(cm_show_nn())
 
 
 def show_data(command):
     args = test_command(command, 3, 1)
-    if args == 0: return 0
+    if args == 0:
+        return ""
+    
     name_nn = args["v1"]
     value = args["v2"]
     n_data = args["v3"]
     
     s_data = data[name_nn][value]
-    try:
-        if len(n_data) != 1:
-            n_data = n_data.split("-")
-            n_data = list(map(int, n_data))
-            print(s_data[n_data[0] - 1:n_data[1] - 1])
-        elif n_data == "*":
-            print(s_data)
-        else:
-            n_data = list(map(int, n_data))[0]
-            print(s_data[n_data - 1])
-    except:
-        print(s_data)
+
+    if len(n_data) != 1:
+        n_data = n_data.split("-")
+        n_data = list(map(int, n_data))
+        return s_data[n_data[0] - 1:n_data[1] - 1]
+    elif n_data == "*":
+        return s_data
+    elif True:
+        n_data = list(map(int, n_data))[0]
+        return s_data[n_data - 1]
 
 
 def len_data(command):
     args = test_command(command, 2, 1)
-    if args == 0: return 0
+    if args == 0:
+        return ""
+    
     name_nn = args["v1"]
     value = args["v2"]
     
-    try:
-        print(f"len {value} = {len(data[name_nn][value])}")
-    except:
-        print(f"len {value} = 1")
+    if isinstance(data[name_nn], list):
+        return f"len {value} = {len(data[name_nn][value])}"
+    
+    return f"len {value} = 1"
 
 
 def train_net(command):
     args = test_command(command, 3, 1)
-    if args == 0: return 0
+    if args == 0:
+        return 0
+    
     name_nn = args["v1"]
     lr = args["v2"]
     err_max = args["v3"]
     
     data[name_nn]["train"] = cm_nn_train(data[name_nn]["ID"], lr, err_max)
-    print(f"\n- {name_nn}: The train has been applied -")
+    return f"\n- {name_nn}: The train has been applied -"
 
 
 def show_graphic(command):
     args = test_command(command, 1, 1)
-    if args == 0: return 0
+    if args == 0:
+        return ""
     name_nn = args["v1"]
     
     x_axis = data[name_nn]["train"][0]
@@ -201,7 +220,8 @@ def show_graphic(command):
     plt.clf()
     plt.plot(x_axis, errors)
     plt.show()
-
+    
+    return ""
 
 def help(command):
     all_commands = {
@@ -218,18 +238,17 @@ def help(command):
         "train_net": "- train_net (ID) (Learning Rate 1 - 100) (Tolerance 1 - 100): Train the neural network with the given ID.",
         "show_graphic": "- show_graphic (ID): Show a graph of the training errors for the neural network with the given ID.",
     }
+    f_all_commands = "\n".join(all_commands)
     
     command_select = command.split()[0]
     
     if command_select not in all_commands and command != "help":
-        print("Invalid command. Type 'help' to see the list of available commands.")
-        return
+        return "Invalid command. Type 'help' to see the list of available commands."
     
     if command_select == "help":
-        print("Available commands:")
-        [print(f"{x}") for x in all_commands]
+        return f"Available commands:\n{f_all_commands}"
     else:
-        print(all_commands[command_select])
+        return all_commands[command_select]
 
 
 def cm_nn():
@@ -257,11 +276,11 @@ def cm_nn_back(nn):
 
 
 def cm_nn_train(nn, lr, err_max):
-    X = inputs
+    x = inputs
     y = target
     lr = int(lr) / 100
     err_max = int(err_max) / 100
-    return nn.train(X, y, lr, err_max)
+    return nn.train(x, y, lr, err_max)
 
 
 def cm_nn_grad(nn, lr):
@@ -270,7 +289,7 @@ def cm_nn_grad(nn, lr):
 
 
 def cm_show_nn():
-    [print(f": {i}") for n, i in enumerate(data)]
+    return [f": {i}" for n, i in enumerate(data)]
 
 
 def update(nn):

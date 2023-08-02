@@ -11,6 +11,7 @@ commands_mapping = {
     "gradientdescent": gradientdescent,
     "get_value": get_value,
     "set_value": set_value,
+    "show_nn": show_nn,
     "show_data": show_data,
     "len_data": len_data,
     "train_net": train_net,
@@ -26,10 +27,10 @@ while True:
     
     probable_cm = correct_command(cmd_user, commands_mapping)
     
-    cmd_name = cmd_user.split()[0].lower()
+    cmd_name = cmd_user.split()[0]
     if cmd_name in commands_mapping:
-        commands_mapping[cmd_name](cmd_user)
-    elif probable_cm[1] > 48:\
+        print(commands_mapping[cmd_name](cmd_user))
+    elif probable_cm[1] > 48:
         print(f"Did you mean: '{probable_cm[0]}'?")
     else:
         print("Unknown command. Please enter a valid command.")
