@@ -68,10 +68,10 @@ def forward(command):
         return ""
     
     name_nn = args["v1"]
+    input_ = command.split(f"{name_nn} ")[-1]
+    input_ = ast.literal_eval(input_)
     
-    data[name_nn]["forward"] = cm_nn_forward(data[name_nn]["ID"])
-    
-    return f"- {name_nn}: The forward has been applied -"
+    return f"The current prediction is: {cm_nn_forward(data[name_nn]['ID'], input_)[0]}"
 
 
 def backpropagation(command):
@@ -81,7 +81,7 @@ def backpropagation(command):
     
     name_nn = args["v1"]
     
-    data[name_nn]["backpropagation"] = cm_nn_back(data[name_nn]["ID"])
+    data[name_nn]["backpropagation"] = cm_nn_back(name_nn)
     
     return f"- {name_nn}: The backpropagation has been applied -"
 
@@ -153,6 +153,9 @@ def show_nn(command):
     if len(data) == 0:
         return "First create a neural network with 'create_net (ID)'"
     
+    if len(command.split()) != 1:
+        return "the command takes no parameters"
+    
     return "\n".join(cm_show_nn())
 
 
@@ -201,24 +204,48 @@ def train_net(command):
     lr = args["v2"]
     err_max = args["v3"]
     
-    data[name_nn]["train"] = cm_nn_train(data[name_nn]["ID"], lr, err_max)
+    x, y = data[name_nn]["datatrain"]
+    
+    data[name_nn]["train"] = cm_nn_train(data[name_nn]["ID"], lr, err_max, x, y)
     return f"\n- {name_nn}: The train has been applied -"
 
 
 def show_graphic(command):
-    args = test_command(command, 1, 1)
+    args = test_command(command, 3, 1)
     if args == 0:
         return ""
-    name_nn = args["v1"]
     
-    x_axis = data[name_nn]["train"][0]
-    errors = data[name_nn]["train"][1]
+    name_nn = args["v1"]
+    type_graphic = args["v2"]
+    plt_type = args["v3"]
+    
+    x, y = data[name_nn][type_graphic]
     
     plt.clf()
-    plt.plot(x_axis, errors)
-    plt.show()
+    if plt_type == "plot":
+        plt.plot(x, y)
+    elif plt_type == "scatter":
+        plt.scatter(x[:, 0], x[:, 1], c=y)
     
+    plt.show()
     return ""
+
+
+def set_datatrain(command):
+    args = test_command(command, 4, 1)
+    if args == 0:
+        return ""
+    
+    name_nn = args["v1"]
+    data_s = args["v2"]
+    size = int(args["v3"])
+    type_dataset = int(args["v4"])
+    
+    x, y = Datatrain.get_datasets(data_s, size, type_dataset)
+    
+    data[name_nn]["datatrain"] = [x, y]
+    
+    return f"\n- {name_nn}: The dataset has been applied successfully -"
 
 
 def get_help(command):
@@ -251,19 +278,20 @@ def cm_nn_default():
     return NeuronalNetwork(2, [4, 6, 4], 1)
 
 
-def cm_nn_forward(nn):
-    return nn.forward(inputs)
+def cm_nn_forward(nn, input_):
+    return nn.forward(input_)
 
 
-def cm_nn_back(nn):
-    output = cm_nn_forward(nn)
+def cm_nn_back(name_nn):
+    x, y = data[name_nn]["datatrain"]
+    nn = data[name_nn]["ID"]
+    target = y
+    output = cm_nn_forward(nn, x)
     error = output - target
     return nn.backprop(error)
 
 
-def cm_nn_train(nn, lr, err_max):
-    x = Datatrain.inputs
-    y = Datatrain.target
+def cm_nn_train(nn, lr, err_max, x, y):
     lr = int(lr) / 100
     err_max = int(err_max) / 100
     return nn.train(x, y, lr, err_max)

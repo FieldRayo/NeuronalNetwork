@@ -33,7 +33,7 @@ class NeuronalNetwork:
         # Set Layers
         self.layers = [self.n_inputs] + self.n_hidden + [self.n_outputs]
         
-        # Inicializar pesos, derivadas y bias
+        # set weights, derivatives y bias
         weights = []
         derivatives = []
         bias = []
@@ -51,7 +51,7 @@ class NeuronalNetwork:
         self.derivatives = derivatives
         self.bias = bias
         
-        # Inicializar activaciones
+        # Set activations
         activations = []
         
         for i in range(len(self.layers)):
@@ -66,6 +66,8 @@ class NeuronalNetwork:
         for i in range(len(bias)):
             d = np.zeros(bias[i].shape)
             deltas.append(d)
+        
+        self.deltas = deltas
     
     def forward(self, inputs):
         self.activations[0] = inputs

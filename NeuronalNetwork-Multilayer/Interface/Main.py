@@ -15,6 +15,7 @@ commands_mapping = {
     "len_data": len_data,
     "train_net": train_net,
     "show_graphic": show_graphic,
+    "set_datatrain": set_datatrain,
     "get_help": get_help
 }
 
