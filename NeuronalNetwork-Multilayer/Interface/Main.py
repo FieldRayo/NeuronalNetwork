@@ -2,7 +2,6 @@ from Commands import *
 from Correct_command import correct_command
 import random
 
-# Diccionario de comandos con sus respectivas funciones
 commands_mapping = {
     "create_net": create_net,
     "create_default_net": create_default_net,
@@ -16,9 +15,8 @@ commands_mapping = {
     "len_data": len_data,
     "train_net": train_net,
     "show_graphic": show_graphic,
-    "help": help,
+    "get_help": get_help
 }
-        
 
 while True:
     cmd_user = input(">>> ")

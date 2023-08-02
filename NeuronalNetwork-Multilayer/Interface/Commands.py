@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import ast
 
 import sys
-import io
 import os
 
 # Agregar el directorio que contiene Multilayer.py al sys.path
@@ -11,8 +10,8 @@ parent_directory = os.path.dirname(current_directory)
 sys.path.append(parent_directory)
 
 from Multilayer import NeuronalNetwork
-
-from Datatrain import *
+import cmd_help
+import Datatrain
 
 data = {}
 
@@ -112,18 +111,16 @@ def get_value(command):
         return "The neural network is missing from the data"
     
     s_data = getattr(data[name_nn]['ID'], value)
-    try:
-        if len(n_data) != 1:
-            n_data = n_data.split("-")
-            n_data = list(map(int, n_data))
-            return s_data[n_data[0] - 1:n_data[1] - 1]
-        elif n_data == "*":
-            return s_data
-        else:
-            n_data = list(map(int, n_data))[0]
-            return s_data[n_data - 1]
-    except:
+    
+    if len(n_data) != 1:
+        n_data = n_data.split("-")
+        n_data = list(map(int, n_data))
+        return s_data[n_data[0] - 1:n_data[1] - 1]
+    elif n_data == "*":
         return s_data
+    else:
+        n_data = list(map(int, n_data))[0]
+        return s_data[n_data - 1]
 
 
 def set_value(command):
@@ -169,7 +166,7 @@ def show_data(command):
     n_data = args["v3"]
     
     s_data = data[name_nn][value]
-
+    
     if len(n_data) != 1:
         n_data = n_data.split("-")
         n_data = list(map(int, n_data))
@@ -223,32 +220,21 @@ def show_graphic(command):
     
     return ""
 
-def help(command):
-    all_commands = {
-        "create_net": "- create_net (ID): Create a new neural network with the given ID.",
-        "create_default_net": "- create_default_net (ID): Create a new neural network with default parameters and the given ID.",
-        "forward": "- forward (ID): Perform forward propagation on the neural network with the given ID.",
-        "backpropagation": "- backpropagation (ID): Perform backpropagation on the neural network with the given ID.",
-        "gradientdescent": "- gradientdecent (ID) (Learning Rate 1 - 100): Perform gradient descent on the neural network with the given ID.",
-        "get_value": "- get_value (ID) (value) (n_data | *, 1, 2, 3.., 1-99): Get a specific value from the neural network with the given ID.",
-        "set_value": "- set_value (ID) (value) (new_value): Set a specific value in the neural network with the given ID.",
-        "show_nn": "- show_nn: Show the names of all created neural networks.",
-        "show_data": "- show_data (ID) (data) (n_data | *, 1, 2, 3.., 1-99): Show specific data from the neural network with the given ID.",
-        "len_data": "- len_data (ID) (data): Show the length of specific data from the neural network with the given ID.",
-        "train_net": "- train_net (ID) (Learning Rate 1 - 100) (Tolerance 1 - 100): Train the neural network with the given ID.",
-        "show_graphic": "- show_graphic (ID): Show a graph of the training errors for the neural network with the given ID.",
-    }
-    f_all_commands = "\n".join(all_commands)
+
+def get_help(command):
+    commands_help = cmd_help.commands_help
+    
+    f_commands_help = "\n".join(commands_help)
     
     command_select = command.split()[0]
     
-    if command_select not in all_commands and command != "help":
+    if command_select not in commands_help and command != "help":
         return "Invalid command. Type 'help' to see the list of available commands."
     
     if command_select == "help":
-        return f"Available commands:\n{f_all_commands}"
+        return f"Available commands:\n{f_commands_help}"
     else:
-        return all_commands[command_select]
+        return commands_help[command_select]
 
 
 def cm_nn():
@@ -276,8 +262,8 @@ def cm_nn_back(nn):
 
 
 def cm_nn_train(nn, lr, err_max):
-    x = inputs
-    y = target
+    x = Datatrain.inputs
+    y = Datatrain.target
     lr = int(lr) / 100
     err_max = int(err_max) / 100
     return nn.train(x, y, lr, err_max)

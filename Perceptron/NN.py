@@ -51,6 +51,7 @@ class NeuronalNetwork:
 
     def main(self, x, y, w, b, act_func):
         epoch = self.epoch
+        outs = []
 
         for i in range(epoch):
             # Start Hidden Layer
@@ -65,6 +66,7 @@ class NeuronalNetwork:
         self.w, self.b = w, b
         # View correct persentage
         self.percentage(outs, y)
+        
     def sigma(self, x, W):
         sigmas = []
         
