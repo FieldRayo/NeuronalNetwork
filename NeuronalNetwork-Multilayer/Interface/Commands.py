@@ -36,6 +36,38 @@ def test_command(command, size, type_op):
     return args
 
 
+def read_file(command):
+    file_name = command.split()[1]
+    
+    file = (open(f"/home/fieldrayo/Proyects/"
+                 f"Github/NeuronalNetwork/NeuronalNetwork-Multilayer/"
+                 f"Interface/Commands_files/{file_name}.txt", "r")).read()
+    
+    print(file)
+    file = file.split(" - ")
+    
+    for cmd in file:
+        cmd_name = cmd.split()[0]
+        commands_mapping[cmd_name](cmd)
+        
+    return ""
+
+
+def create_file(command):
+    file_name = command.split()[1]
+    
+    import os
+    file = open(f"/home/fieldrayo/Proyects/"
+                f"Github/NeuronalNetwork/NeuronalNetwork-Multilayer/"
+                f"Interface/Commands_files/{file_name}.txt", "w")
+        
+    text = input(f"- Archivo {file_name}.txt -\nWrite here: ")
+    file.write(text + os.linesep)
+    file.close()
+    
+    return ""
+    
+
 def create_net(command):
     args = test_command(command, 1, 0)
     if args == 0:
@@ -308,3 +340,30 @@ def cm_show_nn():
 
 def update(nn):
     nn.main()
+
+
+commands_mapping = {
+    "read_file": read_file,
+    "create_file": create_file,
+    "create_net": create_net,
+    "create_default_net": create_default_net,
+    "forward": forward,
+    "backpropagation": backpropagation,
+    "gradientdescent": gradientdescent,
+    "get_value": get_value,
+    "set_value": set_value,
+    "show_nn": show_nn,
+    "show_data": show_data,
+    "len_data": len_data,
+    "train_net": train_net,
+    "show_graphic": show_graphic,
+    "set_datatrain": set_datatrain,
+    "get_help": get_help
+}
+
+# Tareas :
+# 1.- Funcion de reconocimiento de comandos escritos en documentos.txt *
+# 2.- Ingreso de parametros
+# 3.- Mejorar "Get_help"
+# 4.- Guardado de datos (Base de datos)
+# 5.- Comunicacion online

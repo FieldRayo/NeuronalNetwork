@@ -2,23 +2,6 @@ from Commands import *
 from Correct_command import correct_command
 import random
 
-commands_mapping = {
-    "create_net": create_net,
-    "create_default_net": create_default_net,
-    "forward": forward,
-    "backpropagation": backpropagation,
-    "gradientdescent": gradientdescent,
-    "get_value": get_value,
-    "set_value": set_value,
-    "show_nn": show_nn,
-    "show_data": show_data,
-    "len_data": len_data,
-    "train_net": train_net,
-    "show_graphic": show_graphic,
-    "set_datatrain": set_datatrain,
-    "get_help": get_help
-}
-
 while True:
     cmd_user = input(">>> ")
     if cmd_user == "":

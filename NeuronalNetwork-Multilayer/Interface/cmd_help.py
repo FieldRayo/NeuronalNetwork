@@ -1,4 +1,8 @@
 commands_help = {
+    "read_file": "- read_file (file): "
+                 "Run commands from a text file",
+    "create_file": "- create_file (file): "
+                   "Creates a text file in which commands can be executed",
     "create_net": "- create_net (ID): "
                   "Create a new neural network with the given ID.",
     "create_default_net": "- create_default_net (ID): "
