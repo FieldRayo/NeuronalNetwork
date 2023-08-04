@@ -1,30 +1,33 @@
 commands_help = {
-    "read_file": "- read_file (file): "
+    "read_file": "- read_file --file 'file_name': "
                  "Run commands from a text file",
-    "create_file": "- create_file (file): "
+    "create_file": "- create_file --file 'file_name': "
                    "Creates a text file in which commands can be executed",
-    "create_net": "- create_net (ID): "
+    "create_net": "- create_net --name 'name' (default='NN1') --n_inputs 'value' (default=2)"
+                  " --n_hidden 'value' (default=[4, 6, 4]) --n_outputs 'value' (default=1): "
                   "Create a new neural network with the given ID.",
-    "create_default_net": "- create_default_net (ID): "
-                          "Create a new neural network with default parameters and the given ID.",
-    "forward": "- forward (ID) (Input): "
-               "Perform forward propagation on the neural network with the given ID.",
-    "backpropagation": "- backpropagation (ID): "
-                       "Perform backpropagation on the neural network with the given ID.",
-    "gradientdescent": "- gradientdescent (ID) (Learning Rate 1 - 100): "
-                       "Perform gradient descent on the neural network with the given ID.",
-    "get_value": "- get_value (ID) (value) (n_data | *, 1, 2, 3.., 1-99): "
-                 "Get a specific value from the neural network with the given ID.",
-    "set_value": "- set_value (ID) (value) (new_value): "
-                 "Set a specific value in the neural network with the given ID.",
+    "forward": "- forward --name 'name' --input list: "
+               "Perform forward propagation using the specified input on the neural network with the given name.",
+    "backpropagation": "- backpropagation --name 'name': "
+                       "Perform backpropagation on the neural network with the given name.",
+    "gradientdescent": "- gradientdescent --name 'name' --lr float: "
+                       "Perform gradient descent on the neural"
+                       " network with the given name using the specified learning rate.",
+    "get_value": "- get_value --name 'name' --value 'value' --index 'index': "
+                 "Get a specific value from the neural network with the given name. "
+                 "The index can be a number, a range (start-end), or '*' for all values.",
+    "set_value": "- set_value --name 'name' --value 'value' --new_value 'new_value': "
+                 "Set a specific value in the neural network with the given name.",
     "show_nn": "- show_nn: "
                "Show the names of all created neural networks.",
-    "show_data": "- show_data (ID) (data) (n_data | *, 1, 2, 3.., 1-99): "
-                 "Show specific data from the neural network with the given ID.",
-    "len_data": "- len_data (ID) (data): "
-                "Show the length of specific data from the neural network with the given ID.",
-    "train_net": "- train_net (ID) (Learning Rate 1 - 100) (Tolerance 1 - 100): "
-                 "Train the neural network with the given ID.",
-    "show_graphic": "- show_graphic (ID) (type graphic) (plt): "
-                    "Show a graph of the training errors for the neural network with the given ID.",
+    "show_data": "- show_data --name 'name' --value 'value' --index 'index': "
+                 "Show specific data from the neural network with the given name. "
+                 "The index can be a number, a range (start-end), or '*' for all values.",
+    "len_data": "- len_data --name 'name' --value 'value': "
+                "Show the length of specific data from the neural network with the given name.",
+    "train_net.txt": "- train_net.txt --name 'name' --lr float --err_max float: "
+                 "Train the neural network with the given name using the specified learning rate and error tolerance.",
+    "show_graphic": "- show_graphic --name 'name' --graphic 'graphic' --type 'type': "
+                    "Show a graph of the training errors for the neural network with the given name. "
+                    "The type of graphic can be 'plot' or 'scatter'.",
 }

@@ -3,6 +3,7 @@ def correct_command(command, commands_mapping):
     max_percent = 0
     probable_cm = []
 
+
     for i in commands_mapping:
         percents[i] = 0
 
