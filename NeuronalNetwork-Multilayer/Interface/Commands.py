@@ -22,13 +22,13 @@ def get_args(command, parameters):
     
     for x in words:
         p = x.split(" ", 1)
-
+        
         if p[0] in parameters:
             args[p[0]] = ast.literal_eval(p[-1])
         else:
             print(f"The parameter '{p[0]}' is not in the parameter list. "
                   f"For more information consult 'help'.")
-        
+    
     return args
 
 
@@ -51,7 +51,7 @@ def read_file(command):
             commands_mapping[cmd_name](cmd)
         else:
             print(cmd_name)
-        
+    
     return ""
 
 
@@ -64,19 +64,19 @@ def create_file(command):
     file = open(f"/home/fieldrayo/Proyects/"
                 f"Github/NeuronalNetwork/NeuronalNetwork-Multilayer/"
                 f"Interface/Commands_files/{file_name}.txt", "w")
-        
+    
     text = input(f"- Archivo {file_name}.txt -\nWrite here: ")
     file.write(text + os.linesep)
     file.close()
     
     return ""
-    
+
 
 def create_net(command):
     parameters = ["name", "n_inputs", "n_hidden", "n_outputs"]
     default_values = ["NN1", 2, [4, 6, 4], 1]
     args = get_args(command, parameters)
-
+    
     name = args.get("name", default_values[0])
     n_inputs = args.get("n_inputs", default_values[1])
     n_hidden = args.get("n_hidden", default_values[2])
@@ -84,7 +84,7 @@ def create_net(command):
     
     if name in data:
         return f"The name '{name}' has already been used to create a neural network"
-
+    
     data[name] = {}
     data[name]["ID"] = cm_nn(n_inputs, n_hidden, n_outputs)
     
@@ -120,7 +120,7 @@ def backpropagation(command):
 def gradientdescent(command):
     parameters = ["name", "lr"]
     args = get_args(command, parameters)
- 
+    
     name = args["v1"]
     lr = args["v2"]
     
@@ -275,12 +275,13 @@ def set_datatrain(command):
     name = args["name"]
     data_s = args["datatrain"]
     size = args.get("size", 100)
-    file_train = args.get("file_train", 0)
+    file_train = args.get("file_train", None)
     
-    file_train = open(f"/home/fieldrayo/Proyects/"
-                      f"Github/NeuronalNetwork/NeuronalNetwork-Multilayer/"
-                      f"Interface/Commands_files/{file_train}.txt", "r")
-    file_train = file_train.read()
+    if file_train != None:
+        file_train = open(f"/home/fieldrayo/Proyects/"
+                          f"Github/NeuronalNetwork/NeuronalNetwork-Multilayer/"
+                          f"Interface/Commands_files/{file_train}.txt", "r")
+        file_train = file_train.read()
     
     if name not in data:
         return f"The name '{name}' is not found in data. Use 'create net' to create a neural network"
@@ -297,12 +298,12 @@ def get_help(command):
     
     f_commands_help = "\n".join(commands_help)
     
-    command_select = command.split()[1]
+    command_select = command.split()[-1]
     
     if command_select not in commands_help and command != "get_help":
         return "Invalid command. Type 'get_help' to see the list of available commands."
     
-    if command_select == "get_help":
+    elif command_select == "get_help":
         return f"Available commands:\n{f_commands_help}"
     else:
         return commands_help[command_select]
@@ -369,6 +370,6 @@ commands_mapping = {
 # Tareas :
 # 1.- Funcion de reconocimiento de comandos escritos en documentos.txt *
 # 2.- Ingreso de parametros *
-# 3.- Mejorar "Get_help"
+# 3.- Mejorar "Get_help" *
 # 4.- Guardado de datos (Base de datos)
 # 5.- Comunicacion online
