@@ -15,8 +15,6 @@ def get_datasets(data_s, size, user_dataset):
     
     personalized_datasets = {}
     
-    inputs, target = 0, 0
-    
     if data_s in make_datasets:
         inputs, target = make_datasets[data_s]
     elif data_s in load_datasets:

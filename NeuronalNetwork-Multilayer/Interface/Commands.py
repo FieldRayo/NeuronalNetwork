@@ -43,7 +43,7 @@ def read_file(command):
     
     print(file)
     file = file.split(" - ")
-    
+
     for cmd in file:
         cmd_name = cmd.split()[0]
         
@@ -277,7 +277,7 @@ def set_datatrain(command):
     size = args.get("size", 100)
     file_train = args.get("file_train", None)
     
-    if file_train != None:
+    if file_train is not None:
         file_train = open(f"/home/fieldrayo/Proyects/"
                           f"Github/NeuronalNetwork/NeuronalNetwork-Multilayer/"
                           f"Interface/Commands_files/{file_train}.txt", "r")
