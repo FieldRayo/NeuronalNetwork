@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 # plt.scatter(X[:, 0], X[:, 1], c=y)
 # plt.show()
+# Test
 
 class NeuronalNetwork:
     def __init__(self, n_inputs=2, n_hidden=[4, 6, 4], n_outputs=1):
