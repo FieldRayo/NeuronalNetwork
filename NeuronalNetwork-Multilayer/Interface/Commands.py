@@ -309,6 +309,12 @@ def get_help(command):
         return commands_help[command_select]
 
 
+def get_info(name):
+    if name in data:
+        return data[name]
+
+    return
+
 def cm_nn(n_inputs, n_hidden, n_outputs):
     return NeuronalNetwork(n_inputs, n_hidden, n_outputs)
 
@@ -364,7 +370,8 @@ commands_mapping = {
     "train_net": train_net,
     "show_graphic": show_graphic,
     "set_datatrain": set_datatrain,
-    "get_help": get_help
+    "get_help": get_help,
+    "get_info": get_info
 }
 
 # Tareas :
